@@ -1,7 +1,3 @@
-// Hot Blog
-
-
-
 // load Category
 const loadCategory = async() =>{
     try{
