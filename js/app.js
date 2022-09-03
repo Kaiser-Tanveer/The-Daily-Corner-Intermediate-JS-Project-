@@ -70,8 +70,9 @@ const displayCategoryNews = allNews =>{
         </div>
         </div>
         `;
+        toggleSpinner(true);
         categoryNewsTray.appendChild(categoryNewsDiv);
-
+        toggleSpinner(false);
 
 // Modal 
 const modalContainer = document.getElementById('exampleModal');
@@ -118,5 +119,15 @@ document.getElementById('hot-news').addEventListener('click', function(){
 })
 
 
+// Spinner 
+const toggleSpinner = isLoading => {
+    const loderSec = document.getElementById('loader');
+if(isLoading){
+    loderSec.classList.remove('d-none');
+}
+else{
+    loderSec.classList.add('d-none');
+}
+}
 
 loadCategory();
