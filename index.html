@@ -43,10 +43,10 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link" href="#">Daily Feed</a>
+                <a class="nav-link px-3 mx-2" href="#">Daily Feed</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Hot</a>
+                <a id="hot-news" class="nav-link" href="#">Hot</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#"><img src="" /></a>
@@ -57,19 +57,94 @@
         <hr />
       </nav>
 
+      <!-- Blog Section -->
+
+      <article id="blog-article" class="container d-none">
+        <ol>
+          <li>
+            <div class="blog-1">
+              <h4 class="bg-primary px-3 rounded text-light">
+                Difference Between Var, Let and Const??
+              </h4>
+              <p>
+                <strong>Var:</strong> You can re-assign and re-declare a var
+                variable.
+              </p>
+
+              <p>
+                <strong>Let:</strong> You can Re-assign and a in a let variable.
+              </p>
+
+              <p>
+                <strong>Const:</strong> You are not allowed to Re-assign or
+                Re-declare in a const variable.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="blog-1">
+              <h4 class="bg-primary px-3 rounded text-light">
+                Difference Between Arrow function and regular function??
+              </h4>
+              <p>
+                <strong>Arrow Function:</strong> Arrow function — also called
+                fat arrow function— is a new feature introduced in ES6 that is a
+                more concise syntax for writing function expressions. While both
+                regular JavaScript functions and arrow functions work in a
+                similar manner, there are certain differences between them..
+              </p>
+
+              <p>
+                <strong>Regular Function:</strong> Regular functions created
+                using function declarations or expressions are ‘constructible’
+                and ‘callable’. Since regular functions are constructible, they
+                can be called using the ‘new’ keyword. However, the arrow
+                functions are only ‘callable’ and not constructible. Thus, we
+                will get a run-time error on trying to construct a
+                non-constructible arrow functions using the new keyword.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="blog-3">
+              <h4 class="bg-primary px-3 rounded text-light">
+                Why Should we use template String??
+              </h4>
+              <p>
+                Template strings are a powerful feature of modern JavaScript
+                released in ES6. It lets us insert/interpolate variables and
+                expressions into strings without needing to concatenate like in
+                older versions of JavaScript. It allows us to create strings
+                that are complex and contain dynamic elements.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </article>
+
       <!-- Categories -->
       <div class="container text-center">
         <div id="category-tray" class="row d-flex py-3"></div>
       </div>
+
+      <!-- Category Counting -->
+      <div id="category-cout"></div>
     </header>
 
     <!-- Main Section -->
+
+    <!-- Card Section -->
     <main class="container py-5">
       <div id="news-tray" class="row row-cols-1 row-cols-md-2 g-4"></div>
 
       <!-- Modal -->
-      <!-- Scrollable modal -->
-      <div id="news-modal" class="modal-dialog modal-dialog-scrollable"></div>
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      ></div>
     </main>
     <!-- Scripts -->
     <script
