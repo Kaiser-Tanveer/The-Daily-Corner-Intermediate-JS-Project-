@@ -4,11 +4,12 @@ const loadCategory = async() =>{
         const url = `https://openapi.programming-hero.com/api/news/categories`;
     const res = await fetch(url);
     const data = await res.json();
-    return displayCategory(data.data.news_category);
+    displayCategory(data.data.news_category);
     }
     catch{
         console.log(error);
     }
+    toggleSpinner(false);
 }
 
 
@@ -17,6 +18,7 @@ const displayCategory = catagories =>{
     for(const category of catagories){
         // console.log(category);
     const categoryTray = document.getElementById('category-tray');
+    toggleSpinner(true);
     const categoryDiv = document.createElement('div');
     categoryDiv.classList.add('col');
     categoryDiv.innerHTML = `
@@ -27,18 +29,34 @@ const displayCategory = catagories =>{
 }
 
 
+// Spinner 
+const toggleSpinner = isLoading => {
+    const loderSec = document.getElementById('loader');
+if(isLoading){
+    loderSec.classList.remove('d-none');
+}
+else{
+    loderSec.classList.add('d-none');
+}
+}
+
 // Load Catagory news 
-const loadCategoryNews = (id)=>{
-        const url = `https://openapi.programming-hero.com/api/news/category/${id}`;
-        fetch(url)
-        .then(res => res.json())
-        .then(data => displayCategoryNews(data.data))
+const loadCategoryNews = async(id)=>{
+        try{
+            const url = `https://openapi.programming-hero.com/api/news/category/${id}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            displayCategoryNews(data.data);
+        }
+        catch{
+            console.log(error);
+        }
 }
 
 // Display category News 
 const displayCategoryNews = allNews =>{
     allNews.forEach(news =>{
-        console.log(news);
+        // console.log(news);
         const categoryNewsTray = document.getElementById('news-tray');
         categoryNewsTray.textContent = '';
         const categoryNewsDiv = document.createElement('div');
@@ -49,7 +67,6 @@ const displayCategoryNews = allNews =>{
         <div class="card-body">
         <h5 class="card-title">${news.title ? news.title : 'No Title Found'}</h5>
         <p class="card-text">${news.details ? news.details.slice(0,180) : '<span class="text-warning">No Detail found</span>'}...</p>
-
         <div class="row align-items-center">
         <div class="col-4 d-flex">
         <img class="w-25 h-50 rounded-circle" src="${news.author.img ? news.author.img : '<span class="text-warning">No Author found</span>'}">
@@ -66,9 +83,7 @@ const displayCategoryNews = allNews =>{
         </div>
         </div>
         `;
-        toggleSpinner(true);
         categoryNewsTray.appendChild(categoryNewsDiv);
-        toggleSpinner(false);
 
 // Modal 
 const modalContainer = document.getElementById('exampleModal');
@@ -114,16 +129,5 @@ document.getElementById('hot-news').addEventListener('click', function(){
     document.getElementById('blog-article').classList.remove('d-none');
 })
 
-
-// Spinner 
-const toggleSpinner = isLoading => {
-    const loderSec = document.getElementById('loader');
-if(isLoading){
-    loderSec.classList.remove('d-none');
-}
-else{
-    loderSec.classList.add('d-none');
-}
-}
 
 loadCategory();
