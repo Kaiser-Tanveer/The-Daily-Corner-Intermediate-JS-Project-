@@ -9,7 +9,6 @@ const loadCategory = async() =>{
     catch{
         console.log(error);
     }
-    toggleSpinner(false);
 }
 
 
@@ -18,32 +17,21 @@ const displayCategory = catagories =>{
     for(const category of catagories){
         // console.log(category);
     const categoryTray = document.getElementById('category-tray');
-    toggleSpinner(true);
+    const { category_id, category_name } = category;
     const categoryDiv = document.createElement('div');
     categoryDiv.classList.add('col');
     categoryDiv.innerHTML = `
-    <a href="#" onclick="loadCategoryNews('${category.category_id}')" class="btn btn-outline-warning">${category.category_name}</a>
+    <a href="#" onclick="loadCategoryNews('${category_id}')" class="btn btn-outline-warning">${category_name}</a>
     `;
     categoryTray.appendChild(categoryDiv);
     }
 }
 
 
-// Spinner 
-const toggleSpinner = isLoading => {
-    const loderSec = document.getElementById('loader');
-if(isLoading){
-    loderSec.classList.remove('d-none');
-}
-else{
-    loderSec.classList.add('d-none');
-}
-}
-
 // Load Catagory news 
 const loadCategoryNews = async(id)=>{
         try{
-            const url = `https://openapi.programming-hero.com/api/news/category/${id}`;
+            const url = `https://openapi.programming-hero.com/api/news/category/0${id}`;
             const res = await fetch(url);
             const data = await res.json();
             displayCategoryNews(data.data);
@@ -54,9 +42,8 @@ const loadCategoryNews = async(id)=>{
 }
 
 // Display category News 
-const displayCategoryNews = allNews =>{
-    allNews.forEach(news =>{
-        // console.log(news);
+const displayCategoryNews = async news =>{
+        console.log(news);
         const categoryNewsTray = document.getElementById('news-tray');
         categoryNewsTray.textContent = '';
         const categoryNewsDiv = document.createElement('div');
@@ -122,12 +109,9 @@ const modalContainer = document.getElementById('exampleModal');
           </div>
         </div>
     `;
-    });
+
 }
 
-document.getElementById('hot-news').addEventListener('click', function(){
-    document.getElementById('blog-article').classList.remove('d-none');
-})
 
 
 loadCategory();
