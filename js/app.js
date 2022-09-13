@@ -14,9 +14,9 @@ const loadCategory = async() =>{
 
 // Display Categories
 const displayCategory = catagories =>{
+    const categoryTray = document.getElementById('category-tray');
     for(const category of catagories){
         // console.log(category);
-    const categoryTray = document.getElementById('category-tray');
     const categoryDiv = document.createElement('div');
     categoryDiv.classList.add('col');
     categoryDiv.innerHTML = `
@@ -29,18 +29,30 @@ const displayCategory = catagories =>{
 
 // Load Catagory news 
 const loadCategoryNews = (id)=>{
-        const url = `https://openapi.programming-hero.com/api/news/category/${id}`;
-        fetch(url)
-        .then(res => res.json())
-        .then(data => displayCategoryNews(data.data))
+    spinner(true)
+    const url = `https://openapi.programming-hero.com/api/news/category/${id}`;
+    fetch(url)
+    .then(res => res.json())
+    .then(data => displayCategoryNews(data.data))
 }
+
+const sorted = (a, b) => {
+    return b.total_view - a.total_view;
+    }
 
 // Display category News 
 const displayCategoryNews = allNews =>{
+    console.log(allNews)
+    spinner(false)
+    // Sorting
+    let news = allNews.sort(sorted);
+    console.log(news);
+    
+    const categoryNewsTray = document.getElementById('news-tray');
+    categoryNewsTray.textContent = '';
+    document.getElementById('cat-count').innerText = allNews.length;
     allNews.forEach(news =>{
-        console.log(news);
-        const categoryNewsTray = document.getElementById('news-tray');
-        categoryNewsTray.textContent = '';
+        // console.log(news);
         const categoryNewsDiv = document.createElement('div');
         categoryNewsDiv.classList.add('col');
         categoryNewsDiv.innerHTML = `
@@ -60,57 +72,55 @@ const displayCategoryNews = allNews =>{
         </div>
         </div>
         <div class="col-4 text-center"><i class="fa-regular fa-eye fs-6"> ${news.total_view ? news.total_view : '<span style="font-size: 10px" class="text-warning">No View found</span>'}</i></div>
-        <div class="col-4 text-end btn-border-primary"><a href="#" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Show More <i class="fa-solid fa-arrow-right"></i></a>
+        <div class="col-4 text-end btn-border-primary"><a href="#" onclick = "loadPost('${news._id}')" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Show More <i class="fa-solid fa-arrow-right"></i></a>
         </div>
         </div>
         </div>
         </div>
         `;
         categoryNewsTray.appendChild(categoryNewsDiv);
-
-// Modal 
-const modalContainer = document.getElementById('exampleModal');
-    modalContainer.innerHTML = `
-        <div class="modal-dialog modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">${news.title ? news.title : 'No Title Found'}</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-            
-            <div class="card-body">
-            <p class="card-text">${news.details ? news.details : '<span class="text-warning">No Detail found</span>'}</p>
-            </div>
-            </div>
-            <div class="footer">
-            <p>Published on: ${news.author.published_date ? news.author.published_date : '<span class="text-warning">No Publish Date found</span>'}</p>
-
-            <p>Published By (Author): ${news.author.name ? news.author.name : '<span class="text-warning">No Publish Date found</span>'}</p>
-            </div>
-            <div class="modal-footer">
-
-            <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal">
-                Close
-            </button>
-            </div>
-          </div>
-        </div>
-    `;
     });
 }
 
-document.getElementById('hot-news').addEventListener('click', function(){
-    document.getElementById('blog-article').classList.remove('d-none');
-})
+
+
+// Load Modal Post 
+const loadPost = async postId => {
+try{
+    const url = `https://openapi.programming-hero.com/api/news/${postId}`
+const res = await fetch(url);
+    const data = await res.json();
+    return displayPost(data.data[0]);
+    // console.log(data.data[0])
+}
+catch{
+    console.log(error);
+}
+}
+
+const displayPost = async post => {
+    console.log(post.title)
+
+    // Modal 
+document.getElementById('exampleModalLabel').innerHTML = `${post.title ? post.title : 'No Title Found'}`;
+document.getElementById('modal-body').innerText = `${post.details ? post.details : 'No Detail found'}`;
+document.getElementById('modal-footer').innerText = `Author: ${post.author.name ? post.author.name : 'No Author Name found'}`;
+document.getElementById('auth-date').innerText = `Published: ${post.author.published_date ? post.author.published_date : 'No Publish Date found'}`;
+}
+
+// Spinner 
+const spinner = (isloading) => {
+    const loaderId = document.getElementById('loader');
+    if(isloading){
+        loaderId.classList.remove('d-none');
+    }
+    else{
+        loaderId.classList.add('d-none');
+    }
+}
+
+
+
 
 
 loadCategory();
